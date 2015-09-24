@@ -56,7 +56,9 @@
     <Compile Include="AssemblyInfo.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
+    <Compile Include="Specification.fs" />
     <Compile Include="WhenCreatingABoard.fs" />
+    <Compile Include="WhenCreatingAColumn.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
