@@ -1,0 +1,85 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Hello React</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<style>
+		.taskboard {
+		}
+		
+		.taskboardColumns {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			min-height: 200px;
+		}
+		
+		.taskboardColumn {
+			flex-grow: 1;
+		}
+		
+		.taskboardColumnHeader {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+		
+		.taskboardColumnCardHeader {
+			text-align: center;
+		}
+		
+		.taskboardCard {
+			margin-left: 10px;
+			margin-right: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<script type="text/jsx" src="taskboard.jsx"></script>
+	<script type="text/jsx">
+		var data = {
+			columns: [
+				{
+					name: "Column 1",
+					cards: [
+						{
+							name: "card 1",
+							text: "card text"
+						},
+						{
+							name: "card 2",
+							text: "card text"
+						},
+					]
+				},
+				{
+					name: "Column 2",
+					cards: [
+						{
+							name: "card 3",
+							text: "card text"
+						}
+					]
+				},
+				{
+					name: "Column 3",
+					cards: []
+				}
+			]
+		};
+		
+		React.render(
+			<Taskboard taskboard={data} />, 
+			document.getElementById('content')
+		);
+	</script>
+	<div id="content"></div>
+</body>
+</html>
