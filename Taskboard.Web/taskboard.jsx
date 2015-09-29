@@ -1,6 +1,23 @@
 var Taskboard = React.createClass({
+	getInitialState: function() {
+		return {data: this.props.taskboard};
+	},
+	handleColumnCreateSubmit: function(column) {
+		var newColumn = {
+			name: column.name,
+			cards: []
+		};
+		
+		var board = this.state.data;
+		var newBoard = React.addons.update(board, {
+			columns: { $push: [newColumn] }
+		});
+		
+		this.setState({data: newBoard});
+		return;
+	},
 	render: function() {
-		var columnNodes = this.props.taskboard.columns.map(function (column) {
+		var columnNodes = this.state.data.columns.map(function (column) {
 			return (
 				<TaskboardColumn data={column} />
 			);
@@ -10,7 +27,7 @@ var Taskboard = React.createClass({
 				<div className="taskboardColumns">
 					{columnNodes}
 				</div>
-				<TaskboardAddColumnForm />
+				<TaskboardAddColumnForm onColumnCreateSubmit={this.handleColumnCreateSubmit}/>
 			</div>
 		);
 	}
@@ -50,16 +67,22 @@ var TaskboardCard = React.createClass({
 });
 
 var TaskboardAddColumnForm = React.createClass({
+	handleSubmit: function(e) {
+		e.preventDefault();
+		var name = React.findDOMNode(this.refs.name).value.trim();
+		this.props.onColumnCreateSubmit({name: name});
+		return;
+	},
 	render: function() {
 		return (
 			<div>
-				<form>
+				<form onSubmit={this.handleSubmit}>
 					<div>
 						<label for="name">Name</label>
-						<input id="name" type="text" />
+						<input id="name" ref="name" type="text" />
 					</div>
 					<div>
-						<input type="button" value="Add column" />
+						<input type="submit" value="Add column" />
 					</div>
 				</form>
 			</div>
