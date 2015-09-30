@@ -17,6 +17,14 @@ type Column =
         Name : string
         Cards : Card list
     }
+
+type StateId = StateId of int
+
+type State =
+    {
+        Id : StateId
+        Name : string
+    }
     
 type BoardId = BoardId of int
 
@@ -25,20 +33,28 @@ type Board =
         Id : BoardId
         Name : string
         Columns : Column list
+        States : State list
         Created : bool
     }
     with 
-    static member initial = { Id = BoardId 0; Name = "None"; Columns = []; Created = false }
+    static member initial = { Id = BoardId 0; Name = "None"; Columns = []; States = []; Created = false }
 
     
 type Command =
     | CreateBoardCommand of CreateBoardCommand
     | CreateColumnCommand of CreateColumnCommand
     | MoveColumnCommand of MoveColumnCommand
+    | CreateStateCommand of CreateStateCommand
 
 and CreateBoardCommand = 
     {
         Id : BoardId
+        Name : string
+    }
+
+and CreateStateCommand =
+    {
+        BoardId : BoardId
         Name : string
     }
 
@@ -58,10 +74,17 @@ type Event =
     | BoardCreated of BoardCreated
     | ColumnCreated of ColumnCreated
     | ColumnMoved of ColumnMoved
+    | StateCreated of StateCreated
 
 and BoardCreated =
     {
         Id : BoardId
+        Name : string
+    }
+
+and StateCreated =
+    {
+        Id : StateId
         Name : string
     }
 
@@ -98,19 +121,26 @@ let moveColumn (command:MoveColumnCommand) state =
         failwith "Invalid column"
     [ ColumnMoved { Id = command.Id; Position = command.TargetPosition } ]
 
+let createState command state =
+    [ StateCreated { Id = StateId state.States.Length; Name = "New state" } ]
+
 let handle command state  =
     match command with
     | CreateBoardCommand createBoardCommand -> createBoard createBoardCommand state
     | CreateColumnCommand createColumnCommand -> createColumn createColumnCommand state
     | MoveColumnCommand moveColumnCommand -> moveColumn moveColumnCommand state
+    | CreateStateCommand csc -> createState csc state
 
 let evolve event state =
     match event with
     | BoardCreated bc ->
-        { Id = bc.Id; Name = bc.Name; Columns = []; Created = true }
+        { Id = bc.Id; Name = bc.Name; Columns = []; States = []; Created = true }
     | ColumnCreated cc ->
         let numberOfColumns = state.Columns.Length
         let column = { Id = ColumnId numberOfColumns; Name = cc.Name; Cards = [] }
         { state with Columns = List.append state.Columns [ column ]  }
+    | StateCreated sc ->
+        let createdState = { State.Id = sc.Id; Name = sc.Name } 
+        { state with States = List.append state.States [ createdState ] }
 
         

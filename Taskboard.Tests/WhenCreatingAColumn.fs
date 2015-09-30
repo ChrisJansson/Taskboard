@@ -1,6 +1,5 @@
 ﻿module ``When creating a column``
 
-
 open Xunit
 open Swensen.Unquote
 
