@@ -1,4 +1,4 @@
-﻿module ``When creating a column``
+﻿module ``When adding a column``
 
 open Xunit
 open Swensen.Unquote

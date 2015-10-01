@@ -59,7 +59,7 @@
     <Compile Include="Specification.fs" />
     <Compile Include="WhenCreatingABoard.fs" />
     <Compile Include="WhenAddingAState.fs" />
-    <Compile Include="WhenCreatingAColumn.fs" />
+    <Compile Include="WhenAddingAColumn.fs" />
     <Compile Include="WhenAColumnIsMoved.fs" />
   </ItemGroup>
   <ItemGroup>
