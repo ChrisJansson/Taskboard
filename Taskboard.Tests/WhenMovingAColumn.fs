@@ -1,4 +1,4 @@
-﻿module ``When a column is moved``
+﻿module ``When moving a column``
 
 open Xunit
 open Swensen.Unquote

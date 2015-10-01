@@ -14,7 +14,6 @@ type Column =
     {
         Id : ColumnId
         Name : string
-        Cards : Card list
     }
 
 type StateId = StateId of int
@@ -139,7 +138,7 @@ let evolve event state =
         { Id = bc.Id; Name = bc.Name; Columns = []; States = []; Created = true }
     | ColumnCreated cc ->
         let numberOfColumns = state.Columns.Length
-        let column = { Id = ColumnId numberOfColumns; Name = cc.Name; Cards = [] }
+        let column = { Column.Id = ColumnId numberOfColumns; Name = cc.Name; }
         { state with Columns = List.append state.Columns [ column ]  }
     | StateCreated sc ->
         let createdState = { State.Id = sc.Id; Name = sc.Name } 

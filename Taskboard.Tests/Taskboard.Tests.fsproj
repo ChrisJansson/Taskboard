@@ -60,7 +60,7 @@
     <Compile Include="WhenCreatingABoard.fs" />
     <Compile Include="WhenAddingAState.fs" />
     <Compile Include="WhenAddingAColumn.fs" />
-    <Compile Include="WhenAColumnIsMoved.fs" />
+    <Compile Include="WhenMovingAColumn.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
