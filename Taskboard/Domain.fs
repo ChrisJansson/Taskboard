@@ -1,7 +1,6 @@
 ﻿[<AutoOpen>]
 module Domain
 
-
 type CardId = CardId of int
 
 type Card = 
@@ -38,7 +37,6 @@ type Board =
     }
     with 
     static member initial = { Id = BoardId 0; Name = "None"; Columns = []; States = []; Created = false }
-
     
 type Command =
     | CreateBoardCommand of CreateBoardCommand
@@ -61,6 +59,7 @@ and CreateStateCommand =
 and CreateColumnCommand =
     {
         Board : BoardId
+        State : StateId
         Name : string
     }
 
@@ -92,6 +91,7 @@ and ColumnCreated =
     {
         Id : ColumnId
         Name : string
+        State : StateId
     }
 
 and ColumnMoved =
@@ -106,7 +106,9 @@ let createBoard (command:CreateBoardCommand) state =
     else failwith "The board is already created"
 
 let createColumn (command:CreateColumnCommand) state =
-    [ ColumnCreated { Name = command.Name; Id = ColumnId state.Columns.Length } ]
+    if not (state.States |> List.map (fun s -> s.Id) |> List.contains command.State) then
+        failwith "State does not exist"
+    [ ColumnCreated { Name = command.Name; Id = ColumnId state.Columns.Length; State = command.State } ]
 
 let containsColumn board columnId =
     board.Columns |> List.map (fun c -> c.Id) |> List.contains columnId
@@ -142,5 +144,3 @@ let evolve event state =
     | StateCreated sc ->
         let createdState = { State.Id = sc.Id; Name = sc.Name } 
         { state with States = List.append state.States [ createdState ] }
-
-        
