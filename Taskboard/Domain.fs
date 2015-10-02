@@ -138,8 +138,17 @@ let evolve event state =
         { Id = bc.Id; Name = bc.Name; Columns = []; States = []; Created = true }
     | ColumnCreated cc ->
         let numberOfColumns = state.Columns.Length
-        let column = { Column.Id = ColumnId numberOfColumns; Name = cc.Name; }
+        let column = { Column.Id = ColumnId numberOfColumns; Name = cc.Name }
         { state with Columns = List.append state.Columns [ column ]  }
     | StateCreated sc ->
         let createdState = { State.Id = sc.Id; Name = sc.Name } 
         { state with States = List.append state.States [ createdState ] }
+    | ColumnMoved cm ->
+        let targetColumn = state.Columns
+                                            |> List.filter (fun c -> c.Id = cm.Id) 
+                                            |> List.exactlyOne
+        let lower, higher = state.Columns 
+                                            |> List.filter (fun c -> not (c.Id = targetColumn.Id)) 
+                                            |> List.splitAt cm.Position
+        let columns = lower @ [ targetColumn ] @ (higher)
+        { state with Columns = columns }

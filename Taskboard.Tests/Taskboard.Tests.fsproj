@@ -61,6 +61,7 @@
     <Compile Include="WhenAddingAState.fs" />
     <Compile Include="WhenAddingAColumn.fs" />
     <Compile Include="WhenMovingAColumn.fs" />
+    <Compile Include="WhenEvolvingState.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
